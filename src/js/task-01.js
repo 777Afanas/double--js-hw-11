@@ -1,8 +1,9 @@
-const refs = {
-  searchForm: document.querySelector('.search-form'),
-  photosContainer: document.querySelector('.gallery'),
-  loadMoreBtn: document.querySelector('.load-more'),
-};
+
+// import { fetchPhotos } from "./api-service";
+import getRefs from "./get-refs";
+
+const refs = getRefs();
+
 
 let page = 1;
 let per_page = 40;
