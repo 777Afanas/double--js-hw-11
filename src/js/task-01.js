@@ -1,18 +1,17 @@
 
-// import { fetchPhotos } from "./api-service";
+import { FetchApiService }  from "./01-api-service";
 import getRefs from "./get-refs";
-import { renderHits } from "./01-renderMarkup";
-
+import { renderHits } from "./01-renderMarkup"; 
 
 const refs = getRefs();
 
-
-let page = 1;
-let per_page = 40;
-let query;
+const fetchApiService = new FetchApiService();
+console.log(fetchApiService);
+// let page = 1;
+// let per_page = 40;
+// let query;
 // let params;
 // let q;
-let arr;
 
 refs.loadMoreBtn.classList.add('is-hidden');
 refs.searchForm.addEventListener('submit', onSearch);
@@ -24,21 +23,18 @@ function onSearch(e) {
 
   refs.loadMoreBtn.classList.add('is-hidden');
   clearPhotosContainer();
-// console.log(query);
+  console.log(e.currentTarget.elements.searchQuery.value);
+  fetchApiService.query1 = e.currentTarget.elements.searchQuery.value;
+  console.log(fetchApiService);
+ 
+  // if (!fetchApiService.query) {
+  //   alert(`Pole puste`);
+  //   return;
+  // }
 
-  // per_page = 40;
-  // page = 1;
-  query = e.currentTarget.elements.searchQuery.value;
+  // console.dir(FetchApiService);
 
-
-  if (!query) {
-    alert(`Pole puste`);
-    return;
-  }
-    
-
-  // fetchPhotos({ page, per_page, q })
-    fetchPhotos()
+  fetchApiService.fetchPhotos()
     .then(data => {
       console.log(data);
       if (data.hits.length == 0) {
@@ -56,7 +52,7 @@ function onSearch(e) {
 function onLoad() {
   page += 1;
 
-  fetchPhotos()
+  fetchApiService.fetchPhotos()
     .then(data => {
       console.log(data.totalHits);
       if (page - 1 > data.totalHits / per_page) {
@@ -71,26 +67,26 @@ function onLoad() {
 }
 
 
-function fetchPhotos() {
-  const BASE_URL = 'https://pixabay.com/api';
-  const params = new URLSearchParams({
-    key: '39342201-f813eddd1adb93dcbf05db88a',
-    q: query,
-    image_type: 'photo',
-    orientation: 'horizontal',
-    safesearch: true,
-    per_page,
-    page,
-  });
-  const url = `${BASE_URL}/?${params}`;
+// function fetchPhotos() {
+//   const BASE_URL = 'https://pixabay.com/api';
+//   const params = new URLSearchParams({
+//     key: '39342201-f813eddd1adb93dcbf05db88a',
+//     q: query,
+//     image_type: 'photo',
+//     orientation: 'horizontal',
+//     safesearch: true,
+//     per_page,
+//     page,
+//   });
+//   const url = `${BASE_URL}/?${params}`;
 
-  return fetch(url).then(response => {
-    if (!response.ok) {
-      throw new Error(response.status);
-    }
-    return response.json();
-  });
-}
+//   return fetch(url).then(response => {
+//     if (!response.ok) {
+//       throw new Error(response.status);
+//     }
+//     return response.json();
+//   });
+// }
 
 function clearPhotosContainer() {
   refs.photosContainer.innerHTML = ' ';
