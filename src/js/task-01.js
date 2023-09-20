@@ -1,6 +1,8 @@
 
 // import { fetchPhotos } from "./api-service";
 import getRefs from "./get-refs";
+import { renderHits } from "./01-renderMarkup";
+
 
 const refs = getRefs();
 
@@ -8,27 +10,37 @@ const refs = getRefs();
 let page = 1;
 let per_page = 40;
 let query;
+// let params;
+// let q;
+let arr;
 
 refs.loadMoreBtn.classList.add('is-hidden');
 refs.searchForm.addEventListener('submit', onSearch);
-refs.loadMoreBtn.addEventListener('click', onLoad);
+refs.loadMoreBtn.addEventListener('click', onLoad);  
+
 
 function onSearch(e) {
   e.preventDefault();
 
   refs.loadMoreBtn.classList.add('is-hidden');
   clearPhotosContainer();
+// console.log(query);
 
-  page = 1;
+  // per_page = 40;
+  // page = 1;
   query = e.currentTarget.elements.searchQuery.value;
+
 
   if (!query) {
     alert(`Pole puste`);
     return;
   }
+    
 
-  fetchPhotos()
+  // fetchPhotos({ page, per_page, q })
+    fetchPhotos()
     .then(data => {
+      console.log(data);
       if (data.hits.length == 0) {
         alert(`Sorry, there are no images matching your 
               search query. Please try again`);
@@ -58,6 +70,7 @@ function onLoad() {
     .catch(error => console.log(error));
 }
 
+
 function fetchPhotos() {
   const BASE_URL = 'https://pixabay.com/api';
   const params = new URLSearchParams({
@@ -77,32 +90,6 @@ function fetchPhotos() {
     }
     return response.json();
   });
-}
-
-function renderHits(arr) {
-  const markup = arr
-    .map(item => {
-      return `<div class="photo-card">
-        <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
-       <div class="info">
-        <p class="info-item">
-            <b>Likes: ${item.likes}</b>
-        </p>
-        <p class="info-item">
-            <b>Views: ${item.views}</b>
-        </p>
-        <p class="info-item">
-            <b>Comments: ${item.comments}</b>
-        </p>
-        <p class="info-item">
-            <b>Downloads: ${item.downloads}</b>
-        </p>
-        </div>
-          </div>`;
-    })
-    .join('');
-
-  refs.photosContainer.insertAdjacentHTML('beforeend', markup);
 }
 
 function clearPhotosContainer() {
