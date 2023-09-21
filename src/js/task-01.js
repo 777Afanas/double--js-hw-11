@@ -25,11 +25,18 @@ function onSearch(e) {
 
   fetchApiService.fetchPhotos()
     .then(data => {
+      console.log(data);
         if (data.hits.length == 0) {
         alert(`Sorry, there are no images matching your 
               search query. Please try again`);
         return;
       } 
+      console.log(data.totalHits);
+       if (data.totalHits) {
+        alert(`Hooray! We found ${data.totalHits} images.`);
+        // return;
+      } 
+            
       renderHits(data.hits);
       refs.loadMoreBtn.classList.remove('is-hidden');
     })

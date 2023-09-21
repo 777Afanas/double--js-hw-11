@@ -5,10 +5,8 @@ export class FetchApiService {
          this.per_page = '40';
         }
 
-    fetchPhotos() {        
-        console.log(this);
-        const BASE_URL = 'https://pixabay.com/api';
-
+    fetchPhotos() {                
+        const BASE_URL = 'https://pixabay.com/api'; 
         const params = new URLSearchParams({
             key: '39342201-f813eddd1adb93dcbf05db88a',
             q: this.searchQuery,
@@ -19,7 +17,7 @@ export class FetchApiService {
             page: this.page,             
         });
         const url = `${BASE_URL}/?${params}`;
-        console.log(url);
+        
         return fetch(url).then(response => {             
             if (!response.ok) {
                 throw new Error(response.status);
