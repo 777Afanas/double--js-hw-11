@@ -2,6 +2,8 @@
 import { FetchApiService }  from "./01-api-service";
 import getRefs from "./get-refs";
 import { renderHits } from "./01-renderMarkup"; 
+// import SimpleLightbox from 'simplelightbox';
+// import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = getRefs(); 
 const fetchApiService = new FetchApiService(); 
@@ -24,8 +26,7 @@ function onSearch(e) {
   }
 
   fetchApiService.fetchPhotos()
-    .then(data => {
-      console.log(data);
+    .then(data => {       
         if (data.hits.length == 0) {
         alert(`Sorry, there are no images matching your 
               search query. Please try again`);
@@ -36,11 +37,20 @@ function onSearch(e) {
         alert(`Hooray! We found ${data.totalHits} images.`);
         // return;
       } 
-            
+             
       renderHits(data.hits);
+    //  let gallery = new SimpleLightbox('.gallery a', {
+    //    captions: true,
+    //    captionsData: 'alt',
+    //    captionsDelay: 250,
+    //  });
+    //  gallery.refresh();
+    //  console.log(gallery);
+
       refs.loadMoreBtn.classList.remove('is-hidden');
     })
     .catch(error => console.log(error));
+
 }
 
 function onLoad() {   
