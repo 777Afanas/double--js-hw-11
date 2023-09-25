@@ -4,6 +4,7 @@ import getRefs from "./get-refs";
 import { renderHits } from "./01-renderMarkup"; 
 // import SimpleLightbox from 'simplelightbox';
 // import 'simplelightbox/dist/simple-lightbox.min.css';
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const refs = getRefs(); 
 const fetchApiService = new FetchApiService(); 
@@ -21,20 +22,26 @@ function onSearch(e) {
   fetchApiService.resetPage();
  
   if (!fetchApiService.query) {
-    alert(`Pole puste`);
+    // alert(`Pole puste`);
+    Notify.warning(`Sorry, but the search field 
+    cannot be left blank, to start searching,
+    please fill it out`);
     return;
   }
 
   fetchApiService.fetchPhotos()
     .then(data => {       
         if (data.hits.length == 0) {
-        alert(`Sorry, there are no images matching your 
-              search query. Please try again`);
+        // alert(`Sorry, there are no images matching your 
+        //       search query. Please try again`);
+        Notify.failure(`Sorry, there are no images matching your 
+              search query. Please try again`);  
         return;
       } 
       console.log(data.totalHits);
        if (data.totalHits) {
-        alert(`Hooray! We found ${data.totalHits} images.`);
+        //  alert(`Hooray! We found ${data.totalHits} images.`);
+         Notify.success(`Hooray! We found ${data.totalHits} images.`);
         // return;
       } 
              
@@ -59,8 +66,10 @@ function onLoad() {
     .then(data => { 
       console.log(data);     
       if (data.hits.length == 0) {
-        alert(`We're sorry, but you've reached the end of 
-         search results.`);
+        // alert(`We're sorry, but you've reached the end of 
+        //  search results.`);
+        Notify.info(`We're sorry, but you've reached the end of 
+         search results.`);        
         return;
       } 
       renderHits(data.hits);
