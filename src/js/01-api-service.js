@@ -2,7 +2,7 @@ export class FetchApiService {
      constructor() {
          this.searchQuery = '';
          this.page = 1;
-         this.per_page = '40';
+         this.per_page = 40;
         }
 
     fetchPhotos() {                
@@ -13,7 +13,7 @@ export class FetchApiService {
             image_type: 'photo',
             orientation: 'horizontal',
             safesearch: true,
-            per_page: '40',
+            per_page: this.per_page,
             page: this.page,             
         });
         const url = `${BASE_URL}/?${params}`;
