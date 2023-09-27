@@ -1,5 +1,5 @@
 
-import { FetchApiService }  from "./02-api-service";
+import { FetchApiService1 }  from "./02-api-service";
 import getRefs from "./get-refs";
 import { renderHits } from "./01-renderMarkup"; 
 // import SimpleLightbox from 'simplelightbox';
@@ -7,40 +7,38 @@ import { renderHits } from "./01-renderMarkup";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const refs = getRefs(); 
-const fetchApiService = new FetchApiService(); 
+const fetchApiService1 = new FetchApiService1(); 
 
 refs.loadMoreBtn.classList.add('is-hidden');
 refs.searchForm.addEventListener('submit', onSearch);
-refs.loadMoreBtn.addEventListener('click', onLoad);  
+// refs.loadMoreBtn.addEventListener('click', onLoad);  
 
 function onSearch(e) {
   e.preventDefault();
 
   refs.loadMoreBtn.classList.add('is-hidden');
   clearPhotosContainer();   
-  fetchApiService.query = e.currentTarget.elements.searchQuery.value;
-  fetchApiService.resetPage();
+  fetchApiService1.query = e.currentTarget.elements.searchQuery.value;
+  fetchApiService1.resetPage();
  
-  if (!fetchApiService.query) {
-    // alert(`Pole puste`);
+  if (!fetchApiService1.query) {     
     Notify.warning(`Sorry, but the search field 
     cannot be left blank, to start searching,
     please fill it out`);
     return;
   }
 
-  fetchApiService.fetchPhotos()
+  console.log(fetchApiService1.fetchPhotos());
+
+  fetchApiService1.fetchPhotos()
     .then(data => {       
-        if (data.hits.length == 0) {
-        // alert(`Sorry, there are no images matching your 
-        //       search query. Please try again`);
+        if (data.hits.length == 0) { 
         Notify.failure(`Sorry, there are no images matching your 
               search query. Please try again`);  
         return;
       } 
       console.log(data.totalHits);
-       if (data.totalHits) {
-        //  alert(`Hooray! We found ${data.totalHits} images.`);
+       if (data.totalHits) {         
          Notify.success(`Hooray! We found ${data.totalHits} images.`);
         // return;
       } 
@@ -60,22 +58,20 @@ function onSearch(e) {
 
 }
 
-function onLoad() {   
-  fetchApiService.incrementPage();   
-  fetchApiService.fetchPhotos()
-    .then(data => { 
-      console.log(data);     
-      if (data.hits.length == 0) {
-        // alert(`We're sorry, but you've reached the end of 
-        //  search results.`);
-        Notify.info(`We're sorry, but you've reached the end of 
-         search results.`);        
-        return;
-      } 
-      renderHits(data.hits);
-    })
-    .catch(error => console.log(error));
-}
+// function onLoad() {   
+//   fetchApiService1.incrementPage();   
+//   fetchApiService1.fetchPhotos()
+//     .then(data => { 
+//       console.log(data);     
+//       if (data.hits.length == 0) {        
+//         Notify.info(`We're sorry, but you've reached the end of 
+//          search results.`);        
+//         return;
+//       } 
+//       renderHits(data.hits);
+//     })
+//     .catch(error => console.log(error));
+// }
 
 function clearPhotosContainer() {
   refs.photosContainer.innerHTML = ' ';

@@ -1,4 +1,7 @@
-export class FetchApiService {
+import axios from "axios";
+
+
+export class FetchApiService1 {
      constructor() {
          this.searchQuery = '';
          this.page = 1;
@@ -6,25 +9,42 @@ export class FetchApiService {
         }
 
     fetchPhotos() {                
-        const BASE_URL = 'https://pixabay.com/api'; 
-        const params = new URLSearchParams({
-            key: '39342201-f813eddd1adb93dcbf05db88a',
-            q: this.searchQuery,
-            image_type: 'photo',
-            orientation: 'horizontal',
-            safesearch: true,
-            per_page: this.per_page,
-            page: this.page,             
-        });
-        const url = `${BASE_URL}/?${params}`;
+        // const BASE_URL = 'https://pixabay.com/api'; 
+        // const params = new URLSearchParams({
+        //     key: '39342201-f813eddd1adb93dcbf05db88a',
+        //     q: this.searchQuery,
+        //     image_type: 'photo',
+        //     orientation: 'horizontal',
+        //     safesearch: true,
+        //     per_page: this.per_page,
+        //     page: this.page,             
+        // });
+        // const url = `${BASE_URL}/?${params}`;
         
-        return fetch(url).then(response => {             
-            if (!response.ok) {
-                throw new Error(response.status);
-            }
-            return response.json();             
+        // return fetch(url).then(response => {             
+        //     if (!response.ok) {
+        //         throw new Error(response.status);
+        //     }
+        //     return response.json();             
+        // });         
+        console.log(axios);
+        return axios({
+            baseURL: 'https://pixabay.com/api',
+            params: {
+                key: '39342201-f813eddd1adb93dcbf05db88a',
+                q: this.searchQuery,
+                image_type: 'photo',
+                orientation: 'horizontal',
+                safesearch: true,
+                per_page: this.per_page,
+                page: this.page,
+            },
         });         
-    }
+
+
+    }       
+
+
 
     get query() {
         return this.searchQuery;         
