@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export class FetchApiService1 {
+export class FetchApiService {
      constructor() {
          this.searchQuery = '';
          this.page = 1;
@@ -27,7 +27,7 @@ export class FetchApiService1 {
         //     }
         //     return response.json();             
         // });         
-        console.log(axios);
+        // console.log(axios);
         return axios({
             baseURL: 'https://pixabay.com/api',
             params: {
@@ -62,3 +62,5 @@ export class FetchApiService1 {
         this.page = 1; 
     }    
 }
+
+

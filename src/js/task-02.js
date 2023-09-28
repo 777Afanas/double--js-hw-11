@@ -1,13 +1,16 @@
 
-import { FetchApiService1 }  from "./02-api-service";
+import { FetchApiService }  from "./02-api-service";
 import getRefs from "./get-refs";
 import { renderHits } from "./01-renderMarkup"; 
 // import SimpleLightbox from 'simplelightbox';
 // import 'simplelightbox/dist/simple-lightbox.min.css';
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
+
 const refs = getRefs(); 
-const fetchApiService1 = new FetchApiService1(); 
+const fetchApiService = new FetchApiService(); 
+// console.log(fetchApiService.fetchPhotos());
+
 
 refs.loadMoreBtn.classList.add('is-hidden');
 refs.searchForm.addEventListener('submit', onSearch);
@@ -18,26 +21,26 @@ function onSearch(e) {
 
   refs.loadMoreBtn.classList.add('is-hidden');
   clearPhotosContainer();   
-  fetchApiService1.query = e.currentTarget.elements.searchQuery.value;
-  fetchApiService1.resetPage();
+  fetchApiService.query = e.currentTarget.elements.searchQuery.value;
+  fetchApiService.resetPage();
  
-  if (!fetchApiService1.query) {     
+  if (!fetchApiService.query) {     
     Notify.warning(`Sorry, but the search field 
     cannot be left blank, to start searching,
     please fill it out`);
     return;
   }
 
-  console.log(fetchApiService1.fetchPhotos());
+  // console.log(fetchApiService.fetchPhotos());
 
-  fetchApiService1.fetchPhotos()
+  fetchApiService.fetchPhotos()
     .then(data => {       
         if (data.hits.length == 0) { 
         Notify.failure(`Sorry, there are no images matching your 
               search query. Please try again`);  
         return;
       } 
-      console.log(data.totalHits);
+      // console.log(data.totalHits);
        if (data.totalHits) {         
          Notify.success(`Hooray! We found ${data.totalHits} images.`);
         // return;
@@ -58,21 +61,23 @@ function onSearch(e) {
 
 }
 
-// function onLoad() {   
-//   fetchApiService1.incrementPage();   
+
+// function onLoad() {
+//   fetchApiService1.incrementPage();
 //   fetchApiService1.fetchPhotos()
-//     .then(data => { 
-//       console.log(data);     
-//       if (data.hits.length == 0) {        
-//         Notify.info(`We're sorry, but you've reached the end of 
-//          search results.`);        
+//     .then(data => {
+//       console.log(data);
+//       if (data.hits.length == 0) {
+//         Notify.info(`We're sorry, but you've reached the end of
+//          search results.`);
 //         return;
-//       } 
+//       }
 //       renderHits(data.hits);
 //     })
 //     .catch(error => console.log(error));
 // }
 
 function clearPhotosContainer() {
-  refs.photosContainer.innerHTML = ' ';
+    refs.photosContainer.innerHTML = ' ';
 }
+
